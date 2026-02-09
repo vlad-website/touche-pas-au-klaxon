@@ -39,4 +39,9 @@ $router->get('/logout', function () {
     (new \App\Controllers\AuthController())->logout();
 });
 
+$router->get('/dashboard', function () {
+    (new \App\Core\Middleware\AuthMiddleware())->handle();
+    (new \App\Controllers\DashboardController())->index();
+});
+
 $router->run();
