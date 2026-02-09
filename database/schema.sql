@@ -26,7 +26,10 @@ CREATE TABLE users (
     telephone VARCHAR(20),
 
     -- Rôle de l'utilisateur (USER ou ADMIN)
-    role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER'
+    role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
+
+    -- Mot de passe
+    password VARCHAR(255) NOT NULL
 );
 
 -- =======================
