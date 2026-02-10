@@ -10,13 +10,18 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Buki\Router\Router;
 use App\Core\Database;
+use App\Controllers\TrajetController;
 
 $router = new Router();
 
 
 // Page d'accueil
+
+//$router->get('/', function () {
+//    (new \App\Controllers\HomeController())->index();
+//});
 $router->get('/', function () {
-    (new \App\Controllers\HomeController())->index();
+    (new \App\Controllers\TrajetController())->index();
 });
 
 $router->get('/db-test', function () {
@@ -43,5 +48,6 @@ $router->get('/dashboard', function () {
     (new \App\Core\Middleware\AuthMiddleware())->handle();
     (new \App\Controllers\DashboardController())->index();
 });
+
 
 $router->run();
