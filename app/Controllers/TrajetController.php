@@ -12,7 +12,7 @@ class TrajetController {
 
         $trajetModel = new Trajet($pdo);
 
-        $trajets = $trajetModel->getAvailableFutureTrajets();
+        $trajets = $trajetModel->getAvailableFutureTrajetsWithAuthor();
 
         require __DIR__ . '/../Views/trajets/index.php';
     }
