@@ -30,7 +30,63 @@
                     <td><?= htmlspecialchars($trajet['agence_arrivee']) ?></td>
                     <td><?= htmlspecialchars($trajet['date_arrivee']) ?></td>
                     <td><?= (int)$trajet['places_disponibles'] ?></td>
+                    <td>
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#trajetModal<?= (int)$trajet['id'] ?>"
+                        >
+                            Détails
+                        </button>
+                    </td>
                 </tr>
+
+            <div class="modal fade" id="trajetModal<?= (int)$trajet['id'] ?>" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    
+                        <!-- Заголовок модального окна -->
+                        <div class="modal-header">
+                            <h5 class="modal-title">Детали траекта</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                    
+                        <!-- Основное содержимое -->
+                        <div class="modal-body">
+
+                            <p>
+                                <strong>Водитель:</strong>
+                                <?= htmlspecialchars($trajet['prenom'] . ' ' . $trajet['nom']) ?>
+                            </p>
+
+                            <p>
+                                <strong>Email:</strong>
+                                <?= htmlspecialchars($trajet['email']) ?>
+                            </p>
+
+                            <p>
+                                <strong>Телефон:</strong>
+                                <?= htmlspecialchars($trajet['telephone']) ?>
+                            </p>
+
+                            <p>
+                                <strong>Всего мест:</strong>
+                                <?= (int)$trajet['places_totales'] ?>
+                            </p>
+
+                        </div>
+
+                        <!-- Кнопки -->
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                Закрыть
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <?php endforeach; ?>
         </tbody>
     </table>
