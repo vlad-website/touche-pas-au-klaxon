@@ -50,6 +50,7 @@ class Trajet {
         $sql = " 
             SELECT 
                 t.id,
+                t.user_id,
                 a_dep.nom AS agence_depart,
                 t.date_depart,
                 a_arr.nom AS agence_arrivee,
@@ -77,5 +78,19 @@ class Trajet {
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findById(int $id): array|false {
+        $sql = "SELECT * FROM trajets WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function delete(int $id): void {
+        $sql = "DELETE FROM trajets WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
     }
 }

@@ -42,6 +42,42 @@
                     </td>
                 </tr>
 
+            <?php if (
+                isset($_SESSION['user']) &&
+                $_SESSION['user']['id'] === (int)$trajet['user_id']
+            ) : ?>
+                <td>
+                    <a href="/trajets/<?= (int)$trajet['id'] ?>/edit"
+                    class="btn btn-sm btn-warning">
+                        Modifier
+                    </a>
+
+                    <form
+                        method="POST"
+                        action="/trajets/<?= (int)$trajet['id'] ?>/delete"
+                        style="display:inline;"
+                        onsubmit="return confirm('Supprimer ce trajet ?');"
+                    >
+                        <button class="btn btn-sm btn-danger">
+                            Supprimer
+                        </button>
+                    </form>
+                </td>
+            <?php endif; ?>
+
+
+            
+            <!-- ВРЕМЕННО -->
+             <?php if (!empty($_SESSION['success'])) : ?>
+                <p style="color:green;">
+                    <?= htmlspecialchars($_SESSION['success']) ?>
+                </p>
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
+
+
+
+
             <div class="modal fade" id="trajetModal<?= (int)$trajet['id'] ?>" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">

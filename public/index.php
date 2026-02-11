@@ -49,5 +49,9 @@ $router->get('/dashboard', function () {
     (new \App\Controllers\DashboardController())->index();
 });
 
+$router->post('/trajets/{id}/delete', function ($id) {
+    (new \App\Controllers\TrajetController())->delete((int)$id);
+});
+
 
 $router->run();
