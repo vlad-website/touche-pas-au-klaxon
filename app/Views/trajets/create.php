@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un trajet</title>
+</head>
+<body>
+
+<h1>Créer un trajet</h1>
+
+<?php if (!empty($_SESSION['error'])) : ?>
+    <p style="color:red;">
+        <?=  htmlspecialchars($_SESSION['error']) ?>
+    </p>
+    <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
+
+<form method="post" action="/trajets/store">
+
+    <label>Agence de départ</label><br>
+    <select name="agence_depart" required>
+        <?php foreach ($agences as $agence) : ?>
+            <option value="<?= (int)$agence['id'] ?>">
+                <?=  htmlspecialchars($agence['nom']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select><br><br>
+
+    <label>Date de départ</label><br>
+    <input type="datetime-local" name="date_depart" required><br><br>
+
+    <label>Date d'arrivée</label><br>
+    <input type="datetime-local" name="date_arrivee" required><br><br>
+
+    <label>Nombre de places</label><br>
+    <input type="number" name="places_total" min="1" required><br><br>
+
+    <button type="submit">Créer</button>
+</form>   
+
+</body>
+</html>

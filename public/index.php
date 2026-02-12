@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+session_start();
+
 define('ROOT', dirname(__DIR__));
 
 
@@ -16,10 +18,6 @@ $router = new Router();
 
 
 // Page d'accueil
-
-//$router->get('/', function () {
-//    (new \App\Controllers\HomeController())->index();
-//});
 $router->get('/', function () {
     (new \App\Controllers\TrajetController())->index();
 });
@@ -51,6 +49,18 @@ $router->get('/dashboard', function () {
 
 $router->post('/trajets/{id}/delete', function ($id) {
     (new \App\Controllers\TrajetController())->delete((int)$id);
+});
+
+$router->get('/trajets/create', function () {
+    (new \App\Controllers\TrajetController())->create();
+});
+
+$router->post('/trajets/store', function () {
+    (new \App\Controllers\TrajetController())->store();
+});
+
+$router->get('/trajets', function () {
+    (new \App\Controllers\TrajetController())->index();
 });
 
 

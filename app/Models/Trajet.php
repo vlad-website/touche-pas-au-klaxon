@@ -93,4 +93,37 @@ class Trajet {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
     }
+
+    public function create(array $data): void {
+        $sql = "
+            INSERT INTO trajets (
+                agence_depart_id,
+                agence_arrivee_id,
+                date_depart,
+                date_arrivee,
+                places_total,
+                places_disponibles,
+                user_id
+            ) VALUES (
+                :agence_depart_id,
+                :agence_arrivee_id,
+                :date_depart,
+                :date_arrivee,
+                :places_total,
+                :places_total,
+                :user_id
+            )
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            ':agence_depart_id' => $data['agence_depart_id'],
+            ':agence_arrivee_id' => $data['agence_arrivee_id'],
+            ':date_depart' => $data['date_depart'],
+            ':date_arrivee' => $data['date_arrivee'],
+            ':places_total' => $data['places_total'],
+            ':user_id' => $data['user_id'],
+        ]);
+    }
 }
