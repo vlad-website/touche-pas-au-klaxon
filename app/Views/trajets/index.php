@@ -8,6 +8,12 @@
 
 <h1>Trajets disponibles</h1>
 
+<?php if (isset($_SESSION['user'])) : ?>
+    <p>
+        <a href="/trajets/create">➕ Créer un trajet</a>
+    </p>
+<?php endif; ?>
+
 <?php if (empty($trajets)) : ?>
     <!-- Si aucun trajet disponible -->
     <p>Aucun trajet disponible pour le moment.</p>
@@ -39,34 +45,37 @@
                         >
                             Détails
                         </button>
+
+                        <?php if (
+                            isset($_SESSION['user']) &&
+                            $_SESSION['user']['id'] === (int)$trajet['user_id']
+                        ) : ?>
+                            <td>
+                                <a href="/trajets/<?= (int)$trajet['id'] ?>/edit"
+                                class="btn btn-sm btn-warning">
+                                    Modifier
+                                </a>
+
+                                <form
+                                    method="POST"
+                                    action="/trajets/<?= (int)$trajet['id'] ?>/delete"
+                                    style="display:inline;"
+                                    onsubmit="return confirm('Supprimer ce trajet ?');"
+                                >
+                                    <button class="btn btn-sm btn-danger">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </td>
+                        <?php endif; ?>
+
                     </td>
                 </tr>
 
-            <?php if (
-                isset($_SESSION['user']) &&
-                $_SESSION['user']['id'] === (int)$trajet['user_id']
-            ) : ?>
-                <td>
-                    <a href="/trajets/<?= (int)$trajet['id'] ?>/edit"
-                    class="btn btn-sm btn-warning">
-                        Modifier
-                    </a>
-
-                    <form
-                        method="POST"
-                        action="/trajets/<?= (int)$trajet['id'] ?>/delete"
-                        style="display:inline;"
-                        onsubmit="return confirm('Supprimer ce trajet ?');"
-                    >
-                        <button class="btn btn-sm btn-danger">
-                            Supprimer
-                        </button>
-                    </form>
-                </td>
-            <?php endif; ?>
 
 
-            
+
+
             <!-- ВРЕМЕННО -->
              <?php if (!empty($_SESSION['success'])) : ?>
                 <p style="color:green;">
@@ -74,6 +83,9 @@
                 </p>
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
+
+
+
 
 
 
