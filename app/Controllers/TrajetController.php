@@ -34,6 +34,13 @@ class TrajetController {
             exit;
         }
 
+        // ANALYSE CRITIQUE : Auteur uniquement
+        if ((int)$trajet['user_id'] !== (int)$_SESSION['user']['id']) {
+            http_response_code(403);
+            echo "Accès interdit";
+            exit;
+        }
+
         $trajetModel->delete($id);
 
         $_SESSION['success'] = 'Trajet supprimé avec succès';
