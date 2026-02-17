@@ -74,6 +74,19 @@ class TrajetController {
             exit;
         }
 
+        if ($_POST['agence_depart'] === $_POST['agence_arrivee']) {
+            $_SESSION['error'] = "Les agences doivent être différentes.";
+            header('Location: /trajets/create');
+            exit;
+        }
+
+        
+        if (strtotime($_POST['date_arrivee']) <= strtotime($_POST['date_depart'])) {
+            $_SESSION['error'] = "La date d'arrivée doit être après le départ.";
+            header('Location: /trajets/create');
+            exit;
+        }
+
         $pdo = Database::getInstance();
 
         $trajetModel = new Trajet($pdo);
@@ -87,7 +100,7 @@ class TrajetController {
             'user_id' => (int)$_SESSION['user']['id'],
         ]);
 
-        $_SESSION['succes'] = "Trajet créé avec succès.";
+        $_SESSION['success'] = "Trajet créé avec succès.";
 
         header('Location: /');
         exit;

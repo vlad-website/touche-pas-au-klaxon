@@ -17,11 +17,28 @@
 
 <form method="post" action="/trajets/store">
 
+    <h3>Conducteur</h3>
+    <p>
+        <?= htmlspecialchars($_SESSION['user']['prenom'] ?? '') ?>
+        <?= htmlspecialchars($_SESSION['user']['nom'] ?? '') ?><br>
+        <?= htmlspecialchars($_SESSION['user']['email']) ?><br>
+        <?= htmlspecialchars($_SESSION['user']['telephone'] ?? '') ?>
+    </p>
+
     <label>Agence de départ</label><br>
     <select name="agence_depart" required>
         <?php foreach ($agences as $agence) : ?>
             <option value="<?= (int)$agence['id'] ?>">
                 <?=  htmlspecialchars($agence['nom']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select><br><br>
+
+    <label>Agence d’arrivée</label><br>
+    <select name="agence_arrivee" required>
+        <?php foreach ($agences as $agence) : ?>
+            <option value="<?= (int)$agence['id'] ?>">
+                <?= htmlspecialchars($agence['nom']) ?>
             </option>
         <?php endforeach; ?>
     </select><br><br>
@@ -37,6 +54,8 @@
 
     <button type="submit">Créer</button>
 </form>   
+
+<p><a href="/">← Retour</a></p>
 
 </body>
 </html>

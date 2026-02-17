@@ -120,7 +120,7 @@
 
                             <p>
                                 <strong>Всего мест:</strong>
-                                <?= (int)$trajet['places_totales'] ?>
+                                <?= (int)$trajet['places_total'] ?>
                             </p>
 
                         </div>

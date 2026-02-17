@@ -12,7 +12,7 @@ class AuthController {
     }
 
     public function login(): void {
-        session_start();
+        //*session_start();
 
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
@@ -37,11 +37,11 @@ class AuthController {
 
         $error = "Email ou mot de passe incorrect";
 
-        require ROOT . '/Views/auth/login.php';
+        require ROOT . '/app/Views/auth/login.php';
     }
 
     public function logout(): void {
-        session_start();
+        //*session_start();
         session_destroy();
         
         header('Location: /login');
