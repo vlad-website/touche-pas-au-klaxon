@@ -41,8 +41,12 @@ class Database {
                     ]
                 );
             } catch (PDOException $e) {
-                throw new Exception('Erreur de connexion à la base de données');
+                die($e->getMessage());
             }
+            //*Временно, вернуть перед сдачей!!!
+//*           } catch (PDOException $e) {
+//*                throw new Exception('Erreur de connexion à la base de données');
+//*            }
         }
         return self::$instance;
     }
