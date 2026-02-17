@@ -19,10 +19,7 @@
 
     <h3>Conducteur</h3>
     <p>
-        <?= htmlspecialchars($_SESSION['user']['prenom'] ?? '') ?>
-        <?= htmlspecialchars($_SESSION['user']['nom'] ?? '') ?><br>
-        <?= htmlspecialchars($_SESSION['user']['email']) ?><br>
-        <?= htmlspecialchars($_SESSION['user']['telephone'] ?? '') ?>
+        <?= htmlspecialchars($_SESSION['user']['email']) ?>
     </p>
 
     <label>Agence de départ</label><br>
