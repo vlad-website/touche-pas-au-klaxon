@@ -110,7 +110,7 @@ class Trajet {
                 :date_depart,
                 :date_arrivee,
                 :places_total,
-                :places_total,
+                :places_disponibles,
                 :user_id
             )
         ";
@@ -123,6 +123,7 @@ class Trajet {
             ':date_depart' => $data['date_depart'],
             ':date_arrivee' => $data['date_arrivee'],
             ':places_total' => $data['places_total'],
+            ':places_disponibles' => $data['places_total'],
             ':user_id' => $data['user_id'],
         ]);
     }

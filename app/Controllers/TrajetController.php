@@ -36,7 +36,7 @@ class TrajetController {
 
         $trajetModel->delete($id);
 
-        $_SESSION['succes'] = 'Trajet supprimé avec succès';
+        $_SESSION['success'] = 'Trajet supprimé avec succès';
 
         header('Location: /');
         exit;
