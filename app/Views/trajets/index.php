@@ -115,7 +115,7 @@
 
                             <p>
                                 <strong>Телефон:</strong>
-                                <?= htmlspecialchars($trajet['telephone']) ?>
+                                <?= htmlspecialchars($trajet['telephone'] ?? '') ?>
                             </p>
 
                             <p>
