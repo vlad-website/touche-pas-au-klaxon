@@ -48,6 +48,14 @@
             required
         ><br><br>
 
+        <label>Date d'arrivée</label><br>
+        <input
+            type="datetime-local"
+            name="date_arrivee"
+            value="<?= date('Y-m-d\TH:i', strtotime($trajet['date_arrivee'])) ?>"
+            required
+        ><br><br>
+
         <label>Nombre de places</label><br>
         <input
             type="number"
