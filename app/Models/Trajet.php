@@ -127,4 +127,28 @@ class Trajet {
             ':user_id' => $data['user_id'],
         ]);
     }
+
+    public function update(int $id, array $data): void {
+        $sql = "
+            UPDATE trajets SET
+                agence_depart_id = :agence_depart_id,
+                agence_arrivee_id = :agence_arrivee_id,
+                date_depart = :date_depart,
+                date_arrivee = :date_arrivee,
+                places_total = :places_total,
+                places_disponibles = :places_total
+            WHERE id = :id
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute([
+            ':agence_depart_id' => $data['agence_depart_id'],
+            ':agence_arrivee_id' => $data['agence_arrivee_id'],
+            ':date_depart' => $data['date_depart'],
+            ':date_arrivee' => $data['date_arrivee'],
+            ':places_total' => $data['places_total'],
+            ':id' => $id,
+        ]);
+    }
 }
