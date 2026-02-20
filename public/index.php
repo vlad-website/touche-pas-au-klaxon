@@ -1,11 +1,8 @@
 <?php
-
 declare(strict_types=1);
 
 ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
-
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -13,62 +10,94 @@ if (session_status() === PHP_SESSION_NONE) {
 
 define('ROOT', dirname(__DIR__));
 
-
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Buki\Router\Router;
-use App\Core\Database;
+use FastRoute\RouteCollector;
+use function FastRoute\simpleDispatcher;
+
 use App\Controllers\TrajetController;
+use App\Controllers\AuthController;
+use App\Controllers\DashboardController;
+use App\Core\Middleware\AuthMiddleware;
 
-$router = new Router();
+$dispatcher = simpleDispatcher(function (RouteCollector $r) {
 
+    // HOME
+    $r->addRoute('GET', '/', function () {
+        (new TrajetController())->index();
+    });
 
-// Page d'accueil
-$router->get('/', function () {
-    (new \App\Controllers\TrajetController())->index();
+    // AUTH
+    $r->addRoute('GET', '/login', function () {
+        (new AuthController())->showLogin();
+    });
+
+    $r->addRoute('POST', '/login', function () {
+        (new AuthController())->login();
+    });
+
+    $r->addRoute('GET', '/logout', function () {
+        (new AuthController())->logout();
+    });
+
+    // DASHBOARD
+    $r->addRoute('GET', '/dashboard', function () {
+        (new AuthMiddleware())->handle();
+        (new DashboardController())->index();
+    });
+
+    // TRAJETS
+    $r->addRoute('GET', '/trajets', function () {
+        (new TrajetController())->index();
+    });
+
+    $r->addRoute('GET', '/trajets/create', function () {
+        (new TrajetController())->create();
+    });
+
+    $r->addRoute('POST', '/trajets/store', function () {
+        (new TrajetController())->store();
+    });
+
+    $r->addRoute('GET', '/trajets/{id:\d+}/edit', function ($args) {
+        (new TrajetController())->edit((int)$args['id']);
+    });
+
+    $r->addRoute('POST', '/trajets/{id:\d+}/update', function ($args) {
+        (new TrajetController())->update((int)$args['id']);
+    });
+
+    $r->addRoute('POST', '/trajets/{id:\d+}/delete', function ($args) {
+        (new TrajetController())->delete((int)$args['id']);
+    });
 });
 
-$router->get('/db-test', function () {
-    $pdo = Database::getInstance();
+// ===== DISPATCH =====
 
-    $pdo->query('SELECT 1');
+$httpMethod = $_SERVER['REQUEST_METHOD'];
+$uri = $_SERVER['REQUEST_URI'];
 
-    echo 'Connexion BDD OK';
-});
+if (false !== $pos = strpos($uri, '?')) {
+    $uri = substr($uri, 0, $pos);
+}
+$uri = rawurldecode($uri);
 
-$router->get('/login', function () {
-    (new \App\Controllers\AuthController())->showLogin();
-});
+$routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 
-$router->post('/login', function () {
-    (new \App\Controllers\AuthController())->login();
-});
+switch ($routeInfo[0]) {
+    case FastRoute\Dispatcher::NOT_FOUND:
+        http_response_code(404);
+        echo '404 NOT FOUND';
+        break;
 
-$router->get('/logout', function () {
-    (new \App\Controllers\AuthController())->logout();
-});
+    case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
+        http_response_code(405);
+        echo '405 METHOD NOT ALLOWED';
+        break;
 
-$router->get('/dashboard', function () {
-    (new \App\Core\Middleware\AuthMiddleware())->handle();
-    (new \App\Controllers\DashboardController())->index();
-});
-
-$router->post('/trajets/{id}/delete', function ($id) {
-    (new \App\Controllers\TrajetController())->delete((int)$id);
-});
-
-$router->get('/trajets/create', function () {
-    (new \App\Controllers\TrajetController())->create();
-});
-
-$router->post('/trajets/store', function () {
-    (new \App\Controllers\TrajetController())->store();
-});
-
-$router->get('/trajets', function () {
-    (new \App\Controllers\TrajetController())->index();
-});
-
-
-$router->run();
+    case FastRoute\Dispatcher::FOUND:
+        $handler = $routeInfo[1];
+        $vars = $routeInfo[2];
+        $handler($vars);
+        break;
+}

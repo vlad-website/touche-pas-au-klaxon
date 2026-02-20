@@ -112,4 +112,80 @@ class TrajetController {
         header('Location: /');
         exit;
     }
+
+    public function edit(int $id): void {
+        if (!isset($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        $pdo = Database::getInstance();
+        $trajetModel = new Trajet($pdo);
+
+        $trajet = $trajetModel->findById($id);
+
+        if (!$trajet) {
+            header('Location: /');
+            exit;
+        }
+
+        if ((int)$trajet['user_id'] !== (int)$_SESSION['user']['id']) {
+            http_response_code(403);
+            echo "Accès interdit";
+            exit;
+        }
+
+        $agenceModel = new \App\Models\Agence($pdo);
+        $agences = $agenceModel->getAll();
+
+        require __DIR__ . '/../Views/trajets/edit.php';
+    }
+
+    public function update(int $id): void {
+        if (!isset($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        $pdo = Database::getInstance();
+        $trajetModel = new Trajet($pdo);
+
+        $trajet = $trajetModel->findById($id);
+
+        if (!$trajet) {
+            header('Location: /');
+            exit;
+        }
+
+        if ((int)$trajet['user_id'] !== (int)$_SESSION['user']['id']) {
+            http_response_code(403);
+            echo "Accès interdit";
+            exit;
+        }
+
+        if (
+            empty($_POST['agence_depart']) ||
+            empty($_POST['agence_arrivee']) ||
+            empty($_POST['date_depart']) ||
+            empty($_POST['date_arrivee']) ||
+            empty($_POST['places_total'])
+        ) {
+            $_SESSION['error'] = "Tous les champs sont obligatoires.";
+            header("Location: /trajets/$id/edit");
+            exit;
+        }
+
+        $trajetModel->update($id, [
+            'agence_depart_id' => (int)$_POST['agence_depart'],
+            'agence_arrivee_id' => (int)$_POST['agence_arrivee'],
+            'date_depart' => $_POST['date_depart'],
+            'date_arrivee' => $_POST['date_arrivee'],
+            'places_total' => (int)$_POST['places_total'],
+        ]);
+
+        $_SESSION['success'] = "Trajet modifié avec succès.";
+
+        header('Location: /');
+        exit;
+    }
 }
