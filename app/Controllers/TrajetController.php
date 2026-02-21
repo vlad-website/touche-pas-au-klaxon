@@ -163,6 +163,8 @@ class TrajetController {
             exit;
         }
 
+
+        // Champs obligatoires
         if (
             empty($_POST['agence_depart']) ||
             empty($_POST['agence_arrivee']) ||
@@ -175,6 +177,21 @@ class TrajetController {
             exit;
         }
 
+        // Agences différentes
+        if ($_POST['agence_depart'] === $_POST['agence_arrivee']) {
+            $_SESSION['error'] = "Les agences doivent être différentes.";
+            header("Location: /trajets/$id/edit");
+            exit;
+        }
+
+        // Cohérence des dates
+        if ($_POST['date_arrivee'] <= $_POST['date_depart']) {
+            $_SESSION['error'] = "La date d'arrivée doit être après le départ.";
+            header("Location: /trajets/$id/edit");
+            exit;
+        }
+
+        // Mise à jour
         $trajetModel->update($id, [
             'agence_depart_id' => (int)$_POST['agence_depart'],
             'agence_arrivee_id' => (int)$_POST['agence_arrivee'],
