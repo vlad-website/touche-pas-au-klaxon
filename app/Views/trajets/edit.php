@@ -17,7 +17,7 @@
 
     <form method="POST" action="/trajets/<?=  (int)$trajet['id'] ?>/update">
         <label>Agence de départ</label><br>
-        <select name="agence_depart" required>
+        <select name="agence_depart_id" required>
             <?php foreach ($agences as $agence) : ?>
                 <option
                     value="<?=  (int)$agence['id'] ?>"
@@ -29,7 +29,7 @@
         </select><br><br>
 
         <label>Agence d'arrivée</label><br>
-        <select name="agence_arrivee" required>
+        <select name="agence_arrivee_id" required>
             <?php foreach ($agences as $agence) : ?>
                 <option
                     value="<?= (int)$agence['id'] ?>"
