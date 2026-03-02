@@ -1,208 +1,87 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controllers;
-
 use App\Core\Database;
 use App\Models\Trajet;
+use App\Models\Agence;
 
-class TrajetController {
-    public function index(): void {
-        $pdo = Database::getInstance();
-
-        $trajetModel = new Trajet($pdo);
-
-        $trajets = $trajetModel->getAvailableFutureTrajetsWithAuthor();
-
-        require __DIR__ . '/../Views/trajets/index.php';
-    }
-
-    public function delete(int $id): void {
-
+class TrajetController
+{
+    private function auth(): void
+    {
         if (!isset($_SESSION['user'])) {
             header('Location: /login');
             exit;
         }
+    }
+
+    public function index(): void
+    {
+        $pdo = Database::getInstance();
+        $trajets = (new Trajet($pdo))->getAvailableFutureTrajetsWithAuthor();
+        require ROOT . '/app/Views/trajets/index.php';
+    }
+
+    public function create(): void
+    {
+        $this->auth();
+        $pdo = Database::getInstance();
+        $agences = (new Agence($pdo))->getAll();
+        require ROOT . '/app/Views/trajets/create.php';
+    }
+
+    public function store(): void
+    {
+        $this->auth();
+
+        $data = $_POST;
+        $data['user_id'] = $_SESSION['user']['id']; // 🔥 ВАЖНО
 
         $pdo = Database::getInstance();
-        $trajetModel = new Trajet($pdo);
+        (new Trajet($pdo))->create($data);
 
-        $trajet = $trajetModel->findById($id);
+        header('Location: /trajets');
+        exit;
+    }
+    public function edit($id): void
+    {
+        $this->auth();
+
+        $pdo = Database::getInstance();
+
+        $trajetModel = new Trajet($pdo);
+        $trajet = $trajetModel->findById((int)$id);
 
         if (!$trajet) {
-            header('Location: /');
+            header('Location: /trajets');
             exit;
         }
 
-        // ANALYSE CRITIQUE : Auteur uniquement
-        if ((int)$trajet['user_id'] !== (int)$_SESSION['user']['id']) {
-            http_response_code(403);
-            echo "Accès interdit";
-            exit;
-        }
+        // 🔥 ВАЖНО
+        $agences = (new Agence($pdo))->getAll();
 
-        $trajetModel->delete($id);
+        require ROOT . '/app/Views/trajets/edit.php';
+    }
 
-        $_SESSION['success'] = 'Trajet supprimé avec succès';
+    public function update($id): void
+    {
+        $this->auth();
 
-        header('Location: /');
+        $pdo = Database::getInstance();
+        (new Trajet($pdo))->update((int)$id, $_POST);
+
+        header('Location: /trajets');
         exit;
     }
 
-    public function create(): void {
-        if (!isset($_SESSION['user'])) {
-            header('Location: /login');
-            exit;
-        }
+    public function delete($id): void
+    {
+        $this->auth();
 
         $pdo = Database::getInstance();
+        (new Trajet($pdo))->delete((int)$id);
 
-        $agenceModel = new \App\Models\Agence($pdo);
-        $agences = $agenceModel->getAll();
-
-        require __DIR__ . '/../Views/trajets/create.php';
-    }
-
-    public function store(): void {
-        if (!isset($_SESSION['user'])) {
-            header('Location: /login');
-            exit;
-        }
-
-        if (
-            empty($_POST['agence_depart']) ||
-            empty($_POST['agence_arrivee']) ||
-            empty($_POST['date_depart']) ||
-            empty($_POST['date_arrivee']) ||
-            empty($_POST['places_total'])
-        ) {
-            $_SESSION['error'] = "Tous les champs sont obligatoires.";
-            header('Location: /trajets/create');
-            exit;
-        }
-
-        if ($_POST['agence_depart'] === $_POST['agence_arrivee']) {
-            $_SESSION['error'] = "Les agences doivent être différentes.";
-            header('Location: /trajets/create');
-            exit;
-        }
-
-        
-        if (strtotime($_POST['date_arrivee']) <= strtotime($_POST['date_depart'])) {
-            $_SESSION['error'] = "La date d'arrivée doit être après le départ.";
-            header('Location: /trajets/create');
-            exit;
-        }
-
-        $pdo = Database::getInstance();
-
-        $trajetModel = new Trajet($pdo);
-
-        $trajetModel->create([
-            'agence_depart_id' => (int)$_POST['agence_depart'],
-            'agence_arrivee_id' => (int)$_POST['agence_arrivee'],
-            'date_depart' => $_POST['date_depart'],
-            'date_arrivee' => $_POST['date_arrivee'],
-            'places_total' => (int)$_POST['places_total'],
-            'user_id' => (int)$_SESSION['user']['id'],
-        ]);
-
-        $_SESSION['success'] = "Trajet créé avec succès.";
-
-        header('Location: /');
-        exit;
-    }
-
-    public function edit(int $id): void {
-        if (!isset($_SESSION['user'])) {
-            header('Location: /login');
-            exit;
-        }
-
-        $pdo = Database::getInstance();
-        $trajetModel = new Trajet($pdo);
-
-        $trajet = $trajetModel->findById($id);
-
-        if (!$trajet) {
-            header('Location: /');
-            exit;
-        }
-
-        if ((int)$trajet['user_id'] !== (int)$_SESSION['user']['id']) {
-            http_response_code(403);
-            echo "Accès interdit";
-            exit;
-        }
-
-        $agenceModel = new \App\Models\Agence($pdo);
-        $agences = $agenceModel->getAll();
-
-        require __DIR__ . '/../Views/trajets/edit.php';
-    }
-
-    public function update(int $id): void {
-        if (!isset($_SESSION['user'])) {
-            header('Location: /login');
-            exit;
-        }
-
-        $pdo = Database::getInstance();
-        $trajetModel = new Trajet($pdo);
-
-        $trajet = $trajetModel->findById($id);
-
-        if (!$trajet) {
-            header('Location: /');
-            exit;
-        }
-
-        if ((int)$trajet['user_id'] !== (int)$_SESSION['user']['id']) {
-            http_response_code(403);
-            echo "Accès interdit";
-            exit;
-        }
-
-
-        // Champs obligatoires
-        if (
-            empty($_POST['agence_depart']) ||
-            empty($_POST['agence_arrivee']) ||
-            empty($_POST['date_depart']) ||
-            empty($_POST['date_arrivee']) ||
-            empty($_POST['places_total'])
-        ) {
-            $_SESSION['error'] = "Tous les champs sont obligatoires.";
-            header("Location: /trajets/$id/edit");
-            exit;
-        }
-
-        // Agences différentes
-        if ($_POST['agence_depart'] === $_POST['agence_arrivee']) {
-            $_SESSION['error'] = "Les agences doivent être différentes.";
-            header("Location: /trajets/$id/edit");
-            exit;
-        }
-
-        // Cohérence des dates
-        if ($_POST['date_arrivee'] <= $_POST['date_depart']) {
-            $_SESSION['error'] = "La date d'arrivée doit être après le départ.";
-            header("Location: /trajets/$id/edit");
-            exit;
-        }
-
-        // Mise à jour
-        $trajetModel->update($id, [
-            'agence_depart_id' => (int)$_POST['agence_depart'],
-            'agence_arrivee_id' => (int)$_POST['agence_arrivee'],
-            'date_depart' => $_POST['date_depart'],
-            'date_arrivee' => $_POST['date_arrivee'],
-            'places_total' => (int)$_POST['places_total'],
-        ]);
-
-        $_SESSION['success'] = "Trajet modifié avec succès.";
-
-        header('Location: /');
+        header('Location: /trajets');
         exit;
     }
 }
