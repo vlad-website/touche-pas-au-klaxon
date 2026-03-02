@@ -83,6 +83,12 @@
                 </p>
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
+            <?php if (!empty($_SESSION['error'])) : ?>
+                <p style="color:red;">
+                    <?= htmlspecialchars($_SESSION['error']) ?>
+                </p>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
 
 
 
