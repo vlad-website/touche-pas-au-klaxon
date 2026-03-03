@@ -22,4 +22,9 @@ class User {
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getAll(): array
+    {
+        return $this->pdo->query("SELECT * FROM users")->fetchAll();
+    }
 }

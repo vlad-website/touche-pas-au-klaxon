@@ -17,6 +17,12 @@ class TrajetController
 
     private function checkOwner(array $trajet): void
     {
+        // Админ имеет полный доступ
+        if ($_SESSION['user']['role'] === 'ADMIN') {
+            return;
+        }
+
+        // Обычный пользователь — только свои trajets
         if ((int)$trajet['user_id'] !== (int)$_SESSION['user']['id']) {
             http_response_code(403);
             echo 'Accès interdit';
