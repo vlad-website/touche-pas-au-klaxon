@@ -151,4 +151,9 @@ class Trajet {
             ':id' => $id,
         ]);
     }
+
+    public function getAll(): array
+    {
+        return $this->pdo->query("SELECT * FROM trajets")->fetchAll();
+    }
 }

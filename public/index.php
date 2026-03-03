@@ -35,4 +35,11 @@ $router->get('/login', 'AuthController@showLogin');
 $router->post('/login', 'AuthController@login');
 $router->get('/logout', 'AuthController@logout');
 
+/* ================= ADMIN ================= */
+$router->get('/admin', 'AdminController@dashboard');
+$router->get('/admin/users', 'AdminController@users');
+$router->get('/admin/agences', 'AdminController@agences');
+$router->get('/admin/trajets', 'AdminController@trajets');
+$router->post('/admin/trajets/{id}/delete', 'AdminController@deleteTrajet');
+
 $router->run();
