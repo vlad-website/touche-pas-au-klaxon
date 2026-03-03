@@ -178,14 +178,19 @@ class TrajetController
         }
 
         // 4️⃣ Проверка мест
-        if ((int)$_POST['places_total'] < 1) {
-            $_SESSION['error'] = "Le nombre de places doit être valide.";
+        $newTotal = (int)$_POST['places_total'];
+
+        if ($newTotal < 1) {
+            $_SESSION['error'] = "Le nombre de places doit être supérieur à 0.";
             header("Location: /trajets/$id/edit");
             exit;
         }
 
-        if ((int)$_POST['places_total'] < (int)$trajet['places_disponibles']) {
-            $_SESSION['error'] = "Impossible de réduire le nombre total sous les places déjà disponibles.";
+        // Сколько уже забронировано
+        $reserved = (int)$trajet['places_total'] - (int)$trajet['places_disponibles'];
+
+        if ($newTotal < $reserved) {
+            $_SESSION['error'] = "Impossible de réduire le nombre de places en dessous des réservations existantes.";
             header("Location: /trajets/$id/edit");
             exit;
         }
