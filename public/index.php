@@ -40,6 +40,12 @@ $router->get('/admin', 'AdminController@dashboard');
 $router->get('/admin/users', 'AdminController@users');
 $router->get('/admin/agences', 'AdminController@agences');
 $router->get('/admin/trajets', 'AdminController@trajets');
-$router->post('/admin/trajets/{id}/delete', 'AdminController@deleteTrajet');
+$router->post('/admin/trajets/:id/delete', 'AdminController@deleteTrajet');
+
+$router->get('/admin/agences/create', 'AdminController@createAgence');
+$router->post('/admin/agences/store', 'AdminController@storeAgence');
+$router->get('/admin/agences/:id/edit', 'AdminController@editAgence');
+$router->post('/admin/agences/:id/update', 'AdminController@updateAgence');
+$router->post('/admin/agences/:id/delete', 'AdminController@deleteAgence');
 
 $router->run();
