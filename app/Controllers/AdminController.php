@@ -8,7 +8,7 @@ use App\Models\Trajet;
 
 class AdminController {
     private function authAdmin(): void {
-        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'ADMIN') {
             http_response_code(403);
             exit('Accès interdit');
         }
@@ -30,7 +30,7 @@ class AdminController {
         $this->authAdmin();
         $pdo = Database::getInstance();
         $agences = (new Agence($pdo))->getAll();
-        require ROOT . '/app/Views/admin/agences.php';
+        require ROOT . '/app/Views/admin/agences/index.php';
     }
 
     public function trajets(): void {
@@ -47,6 +47,81 @@ class AdminController {
 
         $_SESSION['success'] = 'Trajet supprimé par l\'administrateur.';
         header('Location: /admin/trajets');
+        exit;
+    }
+
+    public function createAgence(): void {
+        $this->authAdmin();
+        require ROOT . '/app/Views/admin/agences/create.php';
+    }
+
+    public function storeAgence(): void {
+        $this->authAdmin();
+
+        if (empty($_POST['nom'])) {
+            $_SESSION['error'] = 'Le nom est obligatoire.';
+            header('Location: /admin/agences/create');
+            exit;
+        }
+
+        $pdo = Database::getInstance();
+        (new Agence($pdo))->create([
+            'nom' => trim($_POST['nom'])
+        ]);
+
+        $_SESSION['success'] = 'Agence créée avec succès.';
+        header('Location: /admin/agences');
+        exit;
+    }
+
+    public function editAgence(int $id): void {
+        $this->authAdmin();
+
+        $pdo = Database::getInstance();
+        $agence = (new Agence($pdo))->findById($id);
+
+        if (!$agence) {
+            header('Location: /admin/agences');
+            exit;
+        }
+
+        require ROOT . '/app/Views/admin/agences/edit.php';
+    }
+
+    public function updateAgence(int $id): void {
+        $this->authAdmin();
+
+        if (empty($_POST['nom'])) {
+            $_SESSION['error'] = 'Le nom est obligatoire.';
+            header("Location: /admin/agences/$id/edit");
+            exit;
+        }
+
+        $pdo = Database::getInstance();
+        (new Agence($pdo))->update($id, ['nom' => trim($_POST['nom'])
+        ]);
+
+        $_SESSION['success'] = 'Agence modifiée avec succès.';
+        header('Location: /admin/agences');
+        exit;
+    }
+
+    public function deleteAgence(int $id): void {
+        $this->authAdmin();
+
+        $pdo = Database::getInstance();
+
+        $trajetModel = new Trajet($pdo);
+        if ($trajetModel->existsWithAgence($id)) {
+            $_SESSION['error'] = "Impossible de supprimer une agence utilisée dans des trajets.";
+            header('Location: /admin/agences');
+            exit;
+        }
+
+        (new Agence($pdo))->delete($id);
+
+        $_SESSION['success'] = 'Agence supprimée.';
+        header('Location: /admin/agences');
         exit;
     }
 }

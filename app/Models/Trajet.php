@@ -156,4 +156,15 @@ class Trajet {
     {
         return $this->pdo->query("SELECT * FROM trajets")->fetchAll();
     }
+
+    public function existsWithAgence(int $agenceId): bool {
+        $stmt = $this->pdo->prepare("
+        SELECT COUNT(*) FROM trajets
+        WHERE agence_depart_id = :id
+        OR agence_arrivee_id = :id
+        ");
+        $stmt->execute(['id' => $agenceId]);
+
+        return (int)$stmt->fetchColumn() > 0;
+    }
 }
