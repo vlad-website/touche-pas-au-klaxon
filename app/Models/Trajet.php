@@ -167,4 +167,21 @@ class Trajet {
 
         return (int)$stmt->fetchColumn() > 0;
     }
+
+    public function getAllWithAgences(): array
+    {
+        $stmt = $this->pdo->query("
+            SELECT t.*, 
+                a1.nom AS depart,
+                a2.nom AS arrivee
+            FROM trajets t
+            JOIN agences a1 ON a1.id = t.agence_depart_id
+            JOIN agences a2 ON a2.id = t.agence_arrivee_id
+            ORDER BY t.date_depart DESC
+        ");
+
+        return $stmt->fetchAll();
+    }
+
+    
 }

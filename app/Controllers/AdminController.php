@@ -36,7 +36,7 @@ class AdminController {
     public function trajets(): void {
         $this->authAdmin();
         $pdo = Database::getInstance();
-        $trajets = (new Trajet($pdo))->getAll();
+        $trajets = (new Trajet($pdo))->getAllWithAgences();
         require ROOT . '/app/Views/admin/trajets.php';
     }
 
@@ -58,16 +58,24 @@ class AdminController {
     public function storeAgence(): void {
         $this->authAdmin();
 
-        if (empty($_POST['nom'])) {
+        $nom = trim($_POST['nom']);
+
+        if (empty($nom)) {
             $_SESSION['error'] = 'Le nom est obligatoire.';
             header('Location: /admin/agences/create');
             exit;
         }
 
         $pdo = Database::getInstance();
-        (new Agence($pdo))->create([
-            'nom' => trim($_POST['nom'])
-        ]);
+        $agenceModel = new Agence($pdo);
+
+        if ($agenceModel->existsByName($nom)) {
+            $_SESSION['error'] = 'Cette agence existe déjà.';
+            header('Location: /admin/agences/create');
+            exit;
+        }
+
+        $agenceModel->create(['nom' => $nom]);
 
         $_SESSION['success'] = 'Agence créée avec succès.';
         header('Location: /admin/agences');
@@ -91,15 +99,24 @@ class AdminController {
     public function updateAgence(int $id): void {
         $this->authAdmin();
 
-        if (empty($_POST['nom'])) {
+        $nom = trim($_POST['nom']);
+
+        if (empty($nom)) {
             $_SESSION['error'] = 'Le nom est obligatoire.';
             header("Location: /admin/agences/$id/edit");
             exit;
         }
 
         $pdo = Database::getInstance();
-        (new Agence($pdo))->update($id, ['nom' => trim($_POST['nom'])
-        ]);
+        $agenceModel = new Agence($pdo);
+
+        if ($agenceModel->existsByNameExceptId($nom, $id)) {
+            $_SESSION['error'] = 'Une agence avec ce nom exite déjà.';
+            header("Location: /admin/agences/$id/edit");
+            exit;
+        }
+
+        $agenceModel->update($id, ['nom' => $nom]);
 
         $_SESSION['success'] = 'Agence modifiée avec succès.';
         header('Location: /admin/agences');
