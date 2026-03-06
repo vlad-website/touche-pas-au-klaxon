@@ -6,6 +6,56 @@
 </head>
 <body>
 
+<h4 class="mb-3">Informations conducteur</h4>
+
+<div class="row mb-3">
+
+    <div class="col-md-6">
+        <label class="form-label">Nom</label>
+        <input
+            type="text"
+            class="form-control"
+            value="<?= htmlspecialchars($_SESSION['user']['nom'] ?? '') ?>"
+            readonly
+        >
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Prénom</label>
+        <input
+            type="text"
+            class="form-control"
+            value="<?= htmlspecialchars($_SESSION['user']['prenom'] ?? '') ?>"
+            readonly
+        >
+    </div>
+
+</div>
+
+<div class="row mb-4">
+
+    <div class="col-md-6">
+        <label class="form-label">Email</label>
+        <input
+            type="text"
+            class="form-control"
+            value="<?= htmlspecialchars($_SESSION['user']['email'] ?? '') ?>"
+            readonly
+        >
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Téléphone</label>
+        <input
+            type="text"
+            class="form-control"
+            value="<?= htmlspecialchars($_SESSION['user']['telephone'] ?? '') ?>"
+            readonly
+        >
+    </div>
+
+</div>
+
 <h1>Créer un trajet</h1>
 
 <?php if (!empty($_SESSION['error'])) : ?>
