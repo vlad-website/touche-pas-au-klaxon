@@ -6,6 +6,8 @@
 </head>
 <body>
     
+<?php require ROOT . '/app/Views/layout/header.php'; ?>
+
     <h1>Connexion</h1>
 
     <?php if (!empty($error)) : ?>
@@ -27,5 +29,8 @@
         <!-- Bouton de validation -->
         <button type="submit">Se connecter</button>
     </form>
+
+<?php require ROOT . '/app/Views/layout/footer.php'; ?>
+
 </body>
 </html>
