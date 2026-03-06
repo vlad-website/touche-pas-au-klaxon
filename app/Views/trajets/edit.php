@@ -5,7 +5,9 @@
     <title>Modifier le trajet</title>
 </head>
 <body>
-    
+
+<?php require ROOT . '/app/Views/layout/header.php'; ?>
+
     <h1>Modifier le trajet</h1>
 
     <?php if (!empty($_SESSION['error'])) : ?>
@@ -71,5 +73,8 @@
     <p>
         <a href="/">← Retour</a>
     </p>
+
+<?php require ROOT . '/app/Views/layout/footer.php'; ?>
+
 </body>
 </html>

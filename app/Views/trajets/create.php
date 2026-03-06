@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<?php require ROOT . '/app/Views/layout/header.php'; ?>
+
 <h4 class="mb-3">Informations conducteur</h4>
 
 <div class="row mb-3">
@@ -103,6 +105,8 @@
 </form>   
 
 <p><a href="/">← Retour</a></p>
+
+<?php require ROOT . '/app/Views/layout/footer.php'; ?>
 
 </body>
 </html>

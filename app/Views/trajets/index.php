@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<?php require ROOT . '/app/Views/layout/header.php'; ?>
+
 <h1>Trajets disponibles</h1>
 
 <?php if (isset($_SESSION['user'])) : ?>
@@ -102,16 +104,23 @@
                     
                         <!-- Заголовок модального окна -->
                         <div class="modal-header">
-                            <h5 class="modal-title">Детали траекта</h5>
+                            <h5 class="modal-title">Détails du trajet</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                     
                         <!-- Основное содержимое -->
                         <div class="modal-body">
 
+                            <h6>Informations conducteur</h6>
+
                             <p>
-                                <strong>Водитель:</strong>
-                                <?= htmlspecialchars($trajet['prenom'] . ' ' . $trajet['nom']) ?>
+                                <strong>Nom:</strong>
+                                <?= htmlspecialchars($trajet['nom']) ?>
+                            </p>
+
+                            <p>
+                                <strong>Prénom:</strong>
+                                <?= htmlspecialchars($trajet['prenom']) ?>
                             </p>
 
                             <p>
@@ -120,12 +129,12 @@
                             </p>
 
                             <p>
-                                <strong>Телефон:</strong>
+                                <strong>Téléphone:</strong>
                                 <?= htmlspecialchars($trajet['telephone'] ?? '') ?>
                             </p>
 
                             <p>
-                                <strong>Всего мест:</strong>
+                                <strong>Places totales:</strong>
                                 <?= (int)$trajet['places_total'] ?>
                             </p>
 
@@ -133,8 +142,18 @@
 
                         <!-- Кнопки -->
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" data-bs-dismiss="modal">
-                                Закрыть
+                            <button 
+                                class="btn btn-secondary" 
+                                data-bs-dismiss="modal">
+                                Fermer
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#trajetModal<?= (int)$trajet['id'] ?>"
+                            >
+                                Détails
                             </button>
                         </div>
 
@@ -145,6 +164,8 @@
         </tbody>
     </table>
 <?php endif; ?>
+
+<?php require ROOT . '/app/Views/layout/footer.php'; ?>
 
 </body>
 </html>
