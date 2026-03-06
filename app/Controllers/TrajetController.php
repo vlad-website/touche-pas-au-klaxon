@@ -64,14 +64,14 @@ class TrajetController
             exit;
         }
 
-        // 2️⃣ Агентства должны отличаться
+        // 2️⃣ Cohérence agences
         if ((int)$_POST['agence_depart_id'] === (int)$_POST['agence_arrivee_id']) {
             $_SESSION['error'] = "Les agences doivent être différentes.";
             header('Location: /trajets/create');
             exit;
         }
 
-        // 3️⃣ Проверка дат
+        // 3️⃣ Cohérence dates
         $dateDepart = strtotime($_POST['date_depart']);
         $dateArrivee = strtotime($_POST['date_arrivee']);
 
@@ -87,7 +87,7 @@ class TrajetController
             exit;
         }
 
-        // 4️⃣ Проверка количества мест
+        // 4️⃣ Places
         if ((int)$_POST['places_total'] < 1) {
             $_SESSION['error'] = "Le nombre de places doit être supérieur à 0.";
             header('Location: /trajets/create');
@@ -160,14 +160,14 @@ class TrajetController
             exit;
         }
 
-        // 2️⃣ Агентства разные
+        // 2️⃣ Cohérence agences
         if ((int)$_POST['agence_depart_id'] === (int)$_POST['agence_arrivee_id']) {
             $_SESSION['error'] = "Les agences doivent être différentes.";
             header("Location: /trajets/$id/edit");
             exit;
         }
 
-        // 3️⃣ Проверка дат
+        // 3️⃣ Cohérence dates
         $dateDepart = strtotime($_POST['date_depart']);
         $dateArrivee = strtotime($_POST['date_arrivee']);
 
@@ -177,7 +177,7 @@ class TrajetController
             exit;
         }
 
-        // 4️⃣ Проверка мест
+        // 4️⃣ Places
         $newTotal = (int)$_POST['places_total'];
 
         if ($newTotal < 1) {
