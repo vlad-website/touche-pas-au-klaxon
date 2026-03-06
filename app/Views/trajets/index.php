@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Trajets disponibles</title>
 </head>
-<body>
+<body> -->
 
 <?php require ROOT . '/app/Views/layout/header.php'; ?>
 
@@ -167,5 +167,5 @@
 
 <?php require ROOT . '/app/Views/layout/footer.php'; ?>
 
-</body>
-</html>
+<!-- </body>
+</html> -->
