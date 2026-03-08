@@ -17,12 +17,12 @@ class TrajetController
 
     private function checkOwner(array $trajet): void
     {
-        // Админ имеет полный доступ
+        // L'administrateur dispose d'un accès complet
         if ($_SESSION['user']['role'] === 'ADMIN') {
             return;
         }
 
-        // Обычный пользователь — только свои trajets
+        // Utilisateur régulier - uniquement le leur trajets
         if ((int)$trajet['user_id'] !== (int)$_SESSION['user']['id']) {
             http_response_code(403);
             echo 'Accès interdit';
@@ -30,6 +30,11 @@ class TrajetController
         }
     }
 
+    /**
+     * Display list of available future trajets
+     *
+     * @return void
+     */
     public function index(): void
     {
         $pdo = Database::getInstance();
@@ -37,6 +42,11 @@ class TrajetController
         require ROOT . '/app/Views/trajets/index.php';
     }
 
+    /**
+     * Show form to create a trajet
+     *
+     * @return void
+     */
     public function create(): void
     {
         $this->auth();
@@ -47,11 +57,16 @@ class TrajetController
         require ROOT . '/app/Views/trajets/create.php';
     }
 
+    /**
+     * Store a new trajet in database
+     *
+     * @return void
+     */
     public function store(): void
     {
         $this->auth();
 
-        // 1️⃣ Проверка обязательных полей
+        // Vérification des champs obligatoires
         if (
             empty($_POST['agence_depart_id']) ||
             empty($_POST['agence_arrivee_id']) ||
@@ -64,14 +79,14 @@ class TrajetController
             exit;
         }
 
-        // 2️⃣ Cohérence agences
+        // Cohérence agences
         if ((int)$_POST['agence_depart_id'] === (int)$_POST['agence_arrivee_id']) {
             $_SESSION['error'] = "Les agences doivent être différentes.";
             header('Location: /trajets/create');
             exit;
         }
 
-        // 3️⃣ Cohérence dates
+        // Cohérence dates
         $dateDepart = strtotime($_POST['date_depart']);
         $dateArrivee = strtotime($_POST['date_arrivee']);
 
@@ -87,14 +102,14 @@ class TrajetController
             exit;
         }
 
-        // 4️⃣ Places
+        // Places
         if ((int)$_POST['places_total'] < 1) {
             $_SESSION['error'] = "Le nombre de places doit être supérieur à 0.";
             header('Location: /trajets/create');
             exit;
         }
 
-        // 5️⃣ Создание
+        // Création
         $data = [
             'agence_depart_id'   => (int)$_POST['agence_depart_id'],
             'agence_arrivee_id'  => (int)$_POST['agence_arrivee_id'],
@@ -113,25 +128,12 @@ class TrajetController
         exit;
     }
 
-    public function edit(int $id): void
-    {
-        $this->auth();
-
-        $pdo = Database::getInstance();
-        $trajetModel = new Trajet($pdo);
-        $trajet = $trajetModel->findById($id);
-
-        if (!$trajet) {
-            header('Location: /trajets');
-            exit;
-        }
-
-        $this->checkOwner($trajet);
-
-        $agences = (new Agence($pdo))->getAll();
-        require ROOT . '/app/Views/trajets/edit.php';
-    }
-
+    /**
+     * Update an existing trajet
+     *
+     * @param int $id
+     * @return void
+     */
     public function update(int $id): void
     {
         $this->auth();
@@ -147,7 +149,7 @@ class TrajetController
 
         $this->checkOwner($trajet);
 
-        // 1️⃣ Проверка обязательных полей
+        // Vérification des champs obligatoires
         if (
             empty($_POST['agence_depart_id']) ||
             empty($_POST['agence_arrivee_id']) ||
@@ -160,14 +162,14 @@ class TrajetController
             exit;
         }
 
-        // 2️⃣ Cohérence agences
+        // Cohérence agences
         if ((int)$_POST['agence_depart_id'] === (int)$_POST['agence_arrivee_id']) {
             $_SESSION['error'] = "Les agences doivent être différentes.";
             header("Location: /trajets/$id/edit");
             exit;
         }
 
-        // 3️⃣ Cohérence dates
+        // Cohérence dates
         $dateDepart = strtotime($_POST['date_depart']);
         $dateArrivee = strtotime($_POST['date_arrivee']);
 
@@ -177,7 +179,7 @@ class TrajetController
             exit;
         }
 
-        // 4️⃣ Places
+        // Places
         $newTotal = (int)$_POST['places_total'];
 
         if ($newTotal < 1) {
@@ -186,7 +188,7 @@ class TrajetController
             exit;
         }
 
-        // Сколько уже забронировано
+        // Combien de réservations ont déjà été effectuées
         $reserved = (int)$trajet['places_total'] - (int)$trajet['places_disponibles'];
 
         if ($newTotal < $reserved) {
@@ -195,7 +197,7 @@ class TrajetController
             exit;
         }
 
-        // 5️⃣ Update
+        // Update
         $trajetModel->update($id, [
             'agence_depart_id'  => (int)$_POST['agence_depart_id'],
             'agence_arrivee_id' => (int)$_POST['agence_arrivee_id'],
@@ -209,6 +211,12 @@ class TrajetController
         exit;
     }
 
+    /**
+     * Delete a trajet
+     *
+     * @param int $id
+     * @return void
+     */
     public function delete(int $id): void
     {
         $this->auth();
