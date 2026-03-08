@@ -1,18 +1,26 @@
 <?php
 declare(strict_types=1);
 
-// ❌ namespace App\Controllers;  ← УДАЛИТЬ
-
 use App\Core\Database;
 use App\Models\User;
 
 class AuthController
 {
+    /**
+     * Display login form
+     *
+     * @return void
+     */
     public function showLogin(): void
     {
         require ROOT . '/app/Views/auth/login.php';
     }
 
+    /**
+     * Display login form
+     *
+     * @return void
+     */
     public function login(): void
     {
         $pdo = Database::getInstance();
@@ -28,6 +36,11 @@ class AuthController
         require ROOT . '/app/Views/auth/login.php';
     }
 
+    /**
+     * Logout current user
+     *
+     * @return void
+     */
     public function logout(): void
     {
         session_destroy();

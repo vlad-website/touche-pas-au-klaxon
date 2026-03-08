@@ -14,11 +14,21 @@ class AdminController {
         }
     }
 
+    /**
+     * Display admin dashboard
+     *
+     * @return void
+     */
     public function dashboard(): void {
         $this->authAdmin();
         require ROOT . '/app/Views/admin/dashboard.php';
     }
 
+    /**
+     * Display list of users
+     *
+     * @return void
+     */
     public function users(): void {
         $this->authAdmin();
         $pdo = Database::getInstance();
@@ -26,6 +36,11 @@ class AdminController {
         require ROOT . '/app/Views/admin/users.php';
     }
 
+    /**
+     * Display agences management page
+     *
+     * @return void
+     */
     public function agences(): void {
         $this->authAdmin();
         $pdo = Database::getInstance();
@@ -33,6 +48,11 @@ class AdminController {
         require ROOT . '/app/Views/admin/agences/index.php';
     }
 
+    /**
+     * Display trajets management page
+     *
+     * @return void
+     */
     public function trajets(): void {
         $this->authAdmin();
         $pdo = Database::getInstance();
@@ -40,6 +60,12 @@ class AdminController {
         require ROOT . '/app/Views/admin/trajets.php';
     }
 
+    /**
+     * Delete a trajet (admin)
+     *
+     * @param int $id
+     * @return void
+     */
     public function deleteTrajet(int $id): void {
         $this->authAdmin();
         $pdo = Database::getInstance();
@@ -50,11 +76,21 @@ class AdminController {
         exit;
     }
 
+    /**
+     * Display form to create agence
+     *
+     * @return void
+     */
     public function createAgence(): void {
         $this->authAdmin();
         require ROOT . '/app/Views/admin/agences/create.php';
     }
 
+    /**
+     * Store new agence
+     *
+     * @return void
+     */
     public function storeAgence(): void {
         $this->authAdmin();
 
@@ -82,6 +118,12 @@ class AdminController {
         exit;
     }
 
+    /**
+     * Display form to edit agence
+     *
+     * @param int $id
+     * @return void
+     */
     public function editAgence(int $id): void {
         $this->authAdmin();
 
@@ -96,6 +138,12 @@ class AdminController {
         require ROOT . '/app/Views/admin/agences/edit.php';
     }
 
+    /**
+     * Update agence
+     *
+     * @param int $id
+     * @return void
+     */
     public function updateAgence(int $id): void {
         $this->authAdmin();
 
@@ -123,6 +171,12 @@ class AdminController {
         exit;
     }
 
+    /**
+     * Delete agence
+     *
+     * @param int $id
+     * @return void
+     */
     public function deleteAgence(int $id): void {
         $this->authAdmin();
 

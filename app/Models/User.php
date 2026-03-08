@@ -11,6 +11,11 @@ class User {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Get all trajets with agences names
+     *
+     * @return array
+     */
     public function findByEmail(string $email): array|false {
         $stmt = $this->pdo->prepare(
             'SELECT * FROM users WHERE email = :email'
@@ -23,6 +28,11 @@ class User {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Get all users
+     *
+     * @return array
+     */
     public function getAll(): array
     {
         return $this->pdo->query("SELECT * FROM users")->fetchAll();

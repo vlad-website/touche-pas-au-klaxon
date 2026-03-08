@@ -13,9 +13,10 @@ class Agence {
     }
 
     /**
+     * Get all agences
+     *
      * @return array
      */
-
     public function getAll(): array {
         $sql = "SELECT id, nom FROM agences ORDER BY nom ASC";
 
@@ -25,6 +26,12 @@ class Agence {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Create a new agence
+     *
+     * @param array $data
+     * @return void
+     */
     public function create(array $data): void {
         $stmt = $this->pdo->prepare("
             INSERT INTO agences (nom)
@@ -33,6 +40,12 @@ class Agence {
         $stmt->execute($data);
     }
 
+    /**
+     * Create a new agence
+     *
+     * @param array $data
+     * @return void
+     */
     public function findById(int $id): ?array {
         $stmt = $this->pdo->prepare("
             SELECT * FROM agences WHERE id = :id
@@ -41,6 +54,13 @@ class Agence {
         return $stmt->fetch() ?: null;
     }
 
+    /**
+     * Update agence
+     *
+     * @param int $id
+     * @param array $data
+     * @return void
+     */
     public function update(int $id, array $data): void {
         $stmt = $this->pdo->prepare("
             UPDATE agences SET nom = :nom WHERE id = :id
@@ -51,6 +71,12 @@ class Agence {
         ]);
     }
 
+    /**
+     * Delete agence
+     *
+     * @param int $id
+     * @return void
+     */
     public function delete(int $id): void {
         $stmt = $this->pdo->prepare("
             DELETE FROM agences WHERE id = :id
@@ -58,6 +84,12 @@ class Agence {
         $stmt->execute(['id' => $id]);
     }
 
+    /**
+     * Check if an agence exists by name
+     *
+     * @param string $nom
+     * @return bool
+     */
     public function existsByName(string $nom): bool {
         $stmt = $this->pdo->prepare("
             SELECT COUNT(*) FROM agences WHERE nom = :nom
@@ -67,6 +99,13 @@ class Agence {
         return (int)$stmt->fetchColumn() > 0;
     }
 
+    /**
+     * Check if an agence name exists excluding a given id
+     *
+     * @param string $nom
+     * @param int $id
+     * @return bool
+     */
     public function existsByNameExceptId(string $nom, int $id): bool
     {
         $stmt = $this->pdo->prepare("

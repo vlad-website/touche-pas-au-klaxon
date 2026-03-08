@@ -1,11 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Trajets disponibles</title>
-</head>
-<body> -->
-
 <?php require ROOT . '/app/Views/layout/header.php'; ?>
 
 <h1>Trajets disponibles</h1>
@@ -74,11 +66,6 @@
                     </td>
                 </tr>
 
-
-
-
-
-            <!-- ВРЕМЕННО -->
              <?php if (!empty($_SESSION['success'])) : ?>
                 <p style="color:green;">
                     <?= htmlspecialchars($_SESSION['success']) ?>
@@ -93,22 +80,17 @@
             <?php endif; ?>
 
 
-
-
-
-
-
             <div class="modal fade" id="trajetModal<?= (int)$trajet['id'] ?>" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     
-                        <!-- Заголовок модального окна -->
+                        <!-- Titre de la fenêtre modale -->
                         <div class="modal-header">
                             <h5 class="modal-title">Détails du trajet</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                     
-                        <!-- Основное содержимое -->
+                        <!-- Contenu principal -->
                         <div class="modal-body">
 
                             <h6>Informations conducteur</h6>
@@ -140,7 +122,7 @@
 
                         </div>
 
-                        <!-- Кнопки -->
+                        <!-- Buttons -->
                         <div class="modal-footer">
                             <button 
                                 class="btn btn-secondary" 
@@ -166,6 +148,3 @@
 <?php endif; ?>
 
 <?php require ROOT . '/app/Views/layout/footer.php'; ?>
-
-<!-- </body>
-</html> -->

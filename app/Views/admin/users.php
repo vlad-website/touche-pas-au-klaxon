@@ -39,5 +39,3 @@
 <a href="/admin">← Retour</a>
 
 <?php require ROOT . '/app/Views/layout/footer.php'; ?>
-
-<!-- <a href="/admin">← Retour</a> -->

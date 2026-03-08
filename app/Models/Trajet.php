@@ -13,9 +13,9 @@ class Trajet {
     }
 
     /**
+    * Get all available future trajets
     * @return array
     */
-
     public function getAvailableFutureTrajets(): array {
         // Requête SQL sécurisée
         $sql = "
@@ -46,6 +46,11 @@ class Trajet {
     }
 
 
+    /**
+     * Get all available future trajets
+     *
+     * @return array
+     */
     public function getAvailableFutureTrajetsWithAuthor(): array {
         $sql = " 
             SELECT 
@@ -80,6 +85,12 @@ class Trajet {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Find trajet by id
+     *
+     * @param int $id
+     * @return array|false
+     */
     public function findById(int $id): array|false {
         $sql = "SELECT * FROM trajets WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
@@ -88,12 +99,24 @@ class Trajet {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Delete trajet by id
+     *
+     * @param int $id
+     * @return void
+     */
     public function delete(int $id): void {
         $sql = "DELETE FROM trajets WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
     }
 
+    /**
+     * Create a new trajet
+     *
+     * @param array $data
+     * @return void
+     */
     public function create(array $data): void {
         $sql = "
             INSERT INTO trajets (
@@ -128,6 +151,13 @@ class Trajet {
         ]);
     }
 
+    /**
+     * Update trajet
+     *
+     * @param int $id
+     * @param array $data
+     * @return void
+     */
     public function update(int $id, array $data): void {
         $sql = "
             UPDATE trajets SET
@@ -152,11 +182,22 @@ class Trajet {
         ]);
     }
 
+    /**
+     * Get all trajets
+     *
+     * @return array
+     */
     public function getAll(): array
     {
         return $this->pdo->query("SELECT * FROM trajets")->fetchAll();
     }
 
+    /**
+     * Check if an agence is used in trajets
+     *
+     * @param int $agenceId
+     * @return bool
+     */
     public function existsWithAgence(int $agenceId): bool {
         $stmt = $this->pdo->prepare("
         SELECT COUNT(*) FROM trajets
@@ -168,6 +209,11 @@ class Trajet {
         return (int)$stmt->fetchColumn() > 0;
     }
 
+    /**
+     * Get all trajets with agences names
+     *
+     * @return array
+     */
     public function getAllWithAgences(): array
     {
         $stmt = $this->pdo->query("
@@ -183,5 +229,5 @@ class Trajet {
         return $stmt->fetchAll();
     }
 
-    
+
 }
