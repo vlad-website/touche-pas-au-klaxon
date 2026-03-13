@@ -10,7 +10,19 @@
     <label>Nom de l'agence :</label>
     <input type="text" name="nom" required>
 
-    <button type="submit">Créer</button>
+    <button
+        type="submit"
+        class="btn btn-success"
+        >
+        <i class="bi bi-plus-lg"></i>
+        Créer
+    </button>
 </form>
 
-<a href="/admin/agences">← Retour</a>
+<a
+href="/admin/agences"
+class="btn btn-secondary"
+>
+<i class="bi bi-arrow-left"></i>
+Retour
+</a>

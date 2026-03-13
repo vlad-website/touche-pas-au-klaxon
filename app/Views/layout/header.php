@@ -2,74 +2,70 @@
 <html lang="fr">
 
 <head>
+    <meta charset="UTF-8">
+    <title><?= $title ?? 'Touche pas au klaxon' ?></title>
 
-<meta charset="UTF-8">
-
-<title><?= $title ?? 'Touche pas au klaxon' ?></title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
 
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+    <div class="container">
 
-<div class="container">
-
-<a class="navbar-brand" href="/">
-Touche pas au klaxon
-</a>
-
-<div class="d-flex align-items-center">
-
-<?php if (!empty($_SESSION['user'])) : ?>
-
-    <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
-
-        <a href="/admin/users" class="btn btn-outline-light btn-sm me-2">
-            Utilisateurs
+        <a class="navbar-brand" href="/">
+            Touche pas au klaxon
         </a>
 
-        <a href="/admin/agences" class="btn btn-outline-light btn-sm me-2">
-            Agences
-        </a>
+        <div class="d-flex align-items-center">
 
-        <a href="/admin/trajets" class="btn btn-outline-light btn-sm me-2">
-            Trajets
-        </a>
+            <?php if (!empty($_SESSION['user'])) : ?>
 
-    <?php else : ?>
+                <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
 
-        <a href="/trajets/create" class="btn btn-success btn-sm me-2">
-            Nouveau trajet
-        </a>
+                    <a href="/admin/users" class="btn btn-outline-light btn-sm me-2">
+                        Utilisateurs
+                    </a>
 
-    <?php endif; ?>
+                    <a href="/admin/agences" class="btn btn-outline-light btn-sm me-2">
+                        Agences
+                    </a>
 
-<span class="text-white me-2">
+                    <a href="/admin/trajets" class="btn btn-outline-light btn-sm me-3">
+                        Trajets
+                    </a>
 
-<?= htmlspecialchars($_SESSION['user']['prenom']) ?>
-<?= htmlspecialchars($_SESSION['user']['nom']) ?>
+                <?php else : ?>
 
-</span>
+                    <a href="/trajets/create" class="btn btn-success btn-sm me-3">
+                        Nouveau trajet
+                    </a>
 
-<a href="/logout" class="btn btn-danger btn-sm">
-Déconnexion
-</a>
+                <?php endif; ?>
 
-<?php else : ?>
+                <span class="text-white me-3">
+                    Bonjour <?= htmlspecialchars($_SESSION['user']['prenom']) ?>
+                </span>
 
-<a href="/login" class="btn btn-primary btn-sm">
-Connexion
-</a>
+                <a href="/logout" class="btn btn-danger btn-sm">
+                    Déconnexion
+                </a>
 
-<?php endif; ?>
+            <?php else : ?>
 
-</div>
+                <a href="/login" class="btn btn-primary btn-sm">
+                    Connexion
+                </a>
 
-</div>
+            <?php endif; ?>
 
+        </div>
+
+    </div>
 </nav>
 
-<div class="container mt-4">
+<main class="container mt-4">

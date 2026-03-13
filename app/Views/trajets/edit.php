@@ -5,74 +5,145 @@
     <title>Modifier le trajet</title>
 </head>
 <body>
-
 <?php require ROOT . '/app/Views/layout/header.php'; ?>
 
-    <h1>Modifier le trajet</h1>
+<h1 class="mb-4">Modifier le trajet</h1>
 
-    <?php if (!empty($_SESSION['error'])) : ?>
-        <p style="color:red;">
-            <?=  htmlspecialchars($_SESSION['error']) ?>
-        </p>
-        <?php unset($_SESSION['error']); ?>
-    <?php endif; ?>
+<?php if (!empty($_SESSION['error'])) : ?>
+    <div class="alert alert-danger">
+        <?= htmlspecialchars($_SESSION['error']) ?>
+    </div>
+    <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
 
-    <form method="POST" action="/trajets/<?=  (int)$trajet['id'] ?>/update">
-        <label>Agence de départ</label><br>
-        <select name="agence_depart_id" required>
-            <?php foreach ($agences as $agence) : ?>
-                <option
-                    value="<?=  (int)$agence['id'] ?>"
-                    <?=  $agence['id'] == $trajet['agence_depart_id'] ? 'selected' : '' ?>
-                >
-                    <?=  htmlspecialchars($agence['nom']) ?>    
-            </option>
-        <?php endforeach; ?>
-        </select><br><br>
+<form method="POST" action="/trajets/<?= (int)$trajet['id'] ?>/update">
 
-        <label>Agence d'arrivée</label><br>
-        <select name="agence_arrivee_id" required>
-            <?php foreach ($agences as $agence) : ?>
-                <option
-                    value="<?= (int)$agence['id'] ?>"
-                    <?=  $agence['id'] == $trajet['agence_arrivee_id'] ? 'selected' : '' ?>
-                >
-                    <?=  htmlspecialchars($agence['nom']) ?>    
-            </option>
-        <?php endforeach; ?>
-        </select><br><br>
+<div class="row mb-3">
 
-        <label>Date de départ</label><br>
-        <input 
-            type="datetime-local"
-            name="date_depart"
-            value="<?=  date('Y-m-d\TH:i', strtotime($trajet['date_depart'])) ?>"
-            required
-        ><br><br>
+<div class="col-md-6">
 
-        <label>Date d'arrivée</label><br>
-        <input
-            type="datetime-local"
-            name="date_arrivee"
-            value="<?= date('Y-m-d\TH:i', strtotime($trajet['date_arrivee'])) ?>"
-            required
-        ><br><br>
+<label class="form-label">Agence de départ</label>
 
-        <label>Nombre de places</label><br>
-        <input
-            type="number"
-            name="places_total"
-            min="1"
-            value="<?=  (int)$trajet['places_total'] ?>"
-            required
-        ><br><br>
+<select
+name="agence_depart_id"
+class="form-select"
+required
+>
 
-        <button type="submit">Enregistrer</button>
-    </form>
+<?php foreach ($agences as $agence) : ?>
 
-    <p>
-        <a href="/">← Retour</a>
-    </p>
+<option
+value="<?= (int)$agence['id'] ?>"
+<?= $agence['id'] == $trajet['agence_depart_id'] ? 'selected' : '' ?>
+>
+<?= htmlspecialchars($agence['nom']) ?>
+</option>
+
+<?php endforeach; ?>
+
+</select>
+
+</div>
+
+
+<div class="col-md-6">
+
+<label class="form-label">Agence d'arrivée</label>
+
+<select
+name="agence_arrivee_id"
+class="form-select"
+required
+>
+
+<?php foreach ($agences as $agence) : ?>
+
+<option
+value="<?= (int)$agence['id'] ?>"
+<?= $agence['id'] == $trajet['agence_arrivee_id'] ? 'selected' : '' ?>
+>
+<?= htmlspecialchars($agence['nom']) ?>
+</option>
+
+<?php endforeach; ?>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="row mb-3">
+
+<div class="col-md-6">
+
+<label class="form-label">Date de départ</label>
+
+<input
+type="datetime-local"
+name="date_depart"
+class="form-control"
+value="<?= date('Y-m-d\TH:i', strtotime($trajet['date_depart'])) ?>"
+required
+>
+
+</div>
+
+
+<div class="col-md-6">
+
+<label class="form-label">Date d'arrivée</label>
+
+<input
+type="datetime-local"
+name="date_arrivee"
+class="form-control"
+value="<?= date('Y-m-d\TH:i', strtotime($trajet['date_arrivee'])) ?>"
+required
+>
+
+</div>
+
+</div>
+
+
+<div class="mb-4">
+
+<label class="form-label">Nombre de places</label>
+
+<input
+type="number"
+name="places_total"
+class="form-control"
+min="1"
+value="<?= (int)$trajet['places_total'] ?>"
+required
+>
+
+</div>
+
+
+<div class="d-flex gap-2">
+
+<button
+type="submit"
+class="btn btn-primary"
+>
+Enregistrer
+</button>
+
+<a
+href="/"
+class="btn btn-secondary"
+>
+<i class="bi bi-arrow-left"></i>
+Retour
+</a>
+
+</div>
+
+</form>
 
 <?php require ROOT . '/app/Views/layout/footer.php'; ?>
 

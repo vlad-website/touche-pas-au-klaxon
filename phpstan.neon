@@ -1,0 +1,7 @@
+parameters:
+    level: 3
+    paths:
+        - app
+
+    bootstrapFiles:
+        - public/index.php

@@ -238,4 +238,30 @@ class TrajetController
         header('Location: /trajets');
         exit;
     }
+
+
+    /**
+     * Edit an existing trajet
+     *
+     * @param int $id
+     * @return void
+     */
+    public function edit(int $id): void
+    {
+        $pdo = Database::getInstance();
+        $trajetModel = new Trajet($pdo);
+        $agenceModel = new Agence($pdo);
+
+        $trajet = $trajetModel->findById($id);
+        $agences = $agenceModel->getAll();
+
+        if (!$trajet) {
+            $_SESSION['error'] = "Trajet introuvable";
+            header('Location: /');
+            exit;
+        }
+
+        require ROOT . '/app/Views/trajets/edit.php';
+    }
+    
 }

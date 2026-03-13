@@ -44,7 +44,7 @@ class Agence {
      * Create a new agence
      *
      * @param array $data
-     * @return void
+     * @return array|null
      */
     public function findById(int $id): ?array {
         $stmt = $this->pdo->prepare("

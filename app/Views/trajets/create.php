@@ -1,16 +1,18 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Créer un trajet</title>
-</head>
-<body>
-
 <?php require ROOT . '/app/Views/layout/header.php'; ?>
+
+<h1 class="mb-4">Créer un trajet</h1>
+
+<?php if (!empty($_SESSION['error'])) : ?>
+    <div class="alert alert-danger">
+        <?= htmlspecialchars($_SESSION['error']) ?>
+    </div>
+    <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
+
 
 <h4 class="mb-3">Informations conducteur</h4>
 
-<div class="row mb-3">
+<div class="row mb-4">
 
     <div class="col-md-6">
         <label class="form-label">Nom</label>
@@ -58,55 +60,125 @@
 
 </div>
 
-<h1>Créer un trajet</h1>
 
-<?php if (!empty($_SESSION['error'])) : ?>
-    <p style="color:red;">
-        <?=  htmlspecialchars($_SESSION['error']) ?>
-    </p>
-    <?php unset($_SESSION['error']); ?>
-<?php endif; ?>
+<form method="POST" action="/trajets/store">
 
-<form method="post" action="/trajets/store">
+<div class="row mb-3">
 
-    <h3>Conducteur</h3>
-    <p>
-        <?= htmlspecialchars($_SESSION['user']['email']) ?>
-    </p>
+<div class="col-md-6">
 
-    <label>Agence de départ</label><br>
-    <select name="agence_depart_id" required>
-        <?php foreach ($agences as $agence) : ?>
-            <option value="<?= (int)$agence['id'] ?>">
-                <?=  htmlspecialchars($agence['nom']) ?>
-            </option>
-        <?php endforeach; ?>
-    </select><br><br>
+<label class="form-label">Agence de départ</label>
 
-    <label>Agence d’arrivée</label><br>
-    <select name="agence_arrivee_id" required>
-        <?php foreach ($agences as $agence) : ?>
-            <option value="<?= (int)$agence['id'] ?>">
-                <?= htmlspecialchars($agence['nom']) ?>
-            </option>
-        <?php endforeach; ?>
-    </select><br><br>
+<select
+name="agence_depart_id"
+class="form-select"
+required
+>
 
-    <label>Date de départ</label><br>
-    <input type="datetime-local" name="date_depart" required><br><br>
+<?php foreach ($agences as $agence) : ?>
 
-    <label>Date d'arrivée</label><br>
-    <input type="datetime-local" name="date_arrivee" required><br><br>
+<option value="<?= (int)$agence['id'] ?>">
+<?= htmlspecialchars($agence['nom']) ?>
+</option>
 
-    <label>Nombre de places</label><br>
-    <input type="number" name="places_total" min="1" required><br><br>
+<?php endforeach; ?>
 
-    <button type="submit">Créer</button>
-</form>   
+</select>
 
-<p><a href="/">← Retour</a></p>
+</div>
+
+
+<div class="col-md-6">
+
+<label class="form-label">Agence d’arrivée</label>
+
+<select
+name="agence_arrivee_id"
+class="form-select"
+required
+>
+
+<?php foreach ($agences as $agence) : ?>
+
+<option value="<?= (int)$agence['id'] ?>">
+<?= htmlspecialchars($agence['nom']) ?>
+</option>
+
+<?php endforeach; ?>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="row mb-3">
+
+<div class="col-md-6">
+
+<label class="form-label">Date de départ</label>
+
+<input
+type="datetime-local"
+name="date_depart"
+class="form-control"
+required
+>
+
+</div>
+
+
+<div class="col-md-6">
+
+<label class="form-label">Date d'arrivée</label>
+
+<input
+type="datetime-local"
+name="date_arrivee"
+class="form-control"
+required
+>
+
+</div>
+
+</div>
+
+
+<div class="mb-4">
+
+<label class="form-label">Nombre de places</label>
+
+<input
+type="number"
+name="places_total"
+class="form-control"
+min="1"
+required
+>
+
+</div>
+
+
+<div class="d-flex gap-2">
+
+<button
+type="submit"
+class="btn btn-success"
+>
+Créer le trajet
+</button>
+
+<a
+href="/"
+class="btn btn-secondary"
+>
+<i class="bi bi-arrow-left"></i>
+Retour
+</a>
+
+</div>
+
+</form>
 
 <?php require ROOT . '/app/Views/layout/footer.php'; ?>
-
-</body>
-</html>
