@@ -37,8 +37,8 @@
 action="/admin/trajets/<?= $trajet['id'] ?>/delete"
 onsubmit="return confirm('Supprimer ce trajet ?')">
 
-<button class="btn btn-danger btn-sm">
-Supprimer
+<button class="btn btn-danger" title="Supprimer">
+<i class="bi bi-trash"></i>
 </button>
 
 </form>
@@ -51,8 +51,12 @@ Supprimer
 
 </tbody>
 </table>
-
-
-<a href="/admin">← Retour</a>
+<a
+href="/admin/agences"
+class="btn btn-secondary"
+>
+<i class="bi bi-arrow-left"></i>
+Retour
+</a>
 
 <?php require ROOT . '/app/Views/layout/footer.php'; ?>

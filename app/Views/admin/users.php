@@ -36,6 +36,12 @@
 
 </tbody>
 </table>
-<a href="/admin">← Retour</a>
+<a
+href="/admin/agences"
+class="btn btn-secondary"
+>
+<i class="bi bi-arrow-left"></i>
+Retour
+</a>
 
 <?php require ROOT . '/app/Views/layout/footer.php'; ?>

@@ -1,0 +1,51 @@
+/* ==============================
+   VARIABLES
+================================ */
+
+$primary-color: #000;
+$table-stripe: #f5f5f5;
+
+/* ==============================
+   NAVBAR
+================================ */
+
+.navbar {
+    font-weight: 500;
+}
+
+/* ==============================
+   TABLE TRAJETS
+================================ */
+
+.table thead {
+    background-color: $primary-color;
+    color: white;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: $table-stripe;
+}
+
+/* ==============================
+   ICON BUTTONS
+================================ */
+
+.btn i {
+    margin-right: 4px;
+}
+
+/* ==============================
+   PAGE TITLE
+================================ */
+
+h1 {
+    margin-bottom: 20px;
+}
+
+/* ==============================
+   FOOTER
+================================ */
+
+footer {
+    font-size: 14px;
+}

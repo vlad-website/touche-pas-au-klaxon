@@ -15,13 +15,15 @@ class AdminController {
     }
 
     /**
-     * Display admin dashboard
+     * Display admin
      *
      * @return void
      */
     public function dashboard(): void {
         $this->authAdmin();
-        require ROOT . '/app/Views/admin/dashboard.php';
+        $pdo = Database::getInstance();
+        $trajets = (new Trajet($pdo))->getAvailableFutureTrajetsWithAuthor();
+        require ROOT . '/app/Views/trajets/index.php';
     }
 
     /**
