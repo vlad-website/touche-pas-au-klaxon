@@ -1,73 +1,105 @@
-# Touche pas au klaxon 🚗
+# 🚗 Touche pas au klaxon
 
-Application web de gestion de trajets développée en PHP (MVC).
+Application web de gestion de trajets inter-sites développée en PHP selon une architecture MVC.
 
-## Description
+---
 
-Cette application permet aux utilisateurs de publier et consulter des trajets entre différentes agences.
+## 📌 Description du projet
 
-Fonctionnalités principales :
+Cette application permet aux employés d’une entreprise de consulter, créer et gérer des trajets entre différentes agences afin de faciliter le covoiturage interne.
 
-* consultation des trajets disponibles
-* création d’un trajet
-* modification et suppression de ses trajets
-* interface administrateur pour gérer :
+Le projet inclut une gestion des rôles (utilisateur et administrateur) ainsi qu’un système d’authentification sécurisé.
 
-  * les utilisateurs
-  * les agences
-  * les trajets
+---
 
-## Technologies utilisées
+## ⚙️ Fonctionnalités
 
-* PHP 8
-* MySQL
-* Bootstrap 5
-* SASS
-* PHPUnit
-* PHPStan
-* Router : izniburak/router
+### 👤 Utilisateur
 
-## Architecture
+* Connexion / déconnexion
+* Consultation des trajets disponibles
+* Création d’un trajet
+* Modification de ses propres trajets
+* Suppression de ses trajets
 
-Le projet suit une architecture **MVC** :
+### 🛠️ Administrateur
+
+* Gestion des utilisateurs
+* Gestion des agences
+* Gestion de tous les trajets
+
+---
+
+## 🧱 Architecture
+
+Le projet suit une architecture MVC :
 
 ```
 app/
-  Controllers/
-  Core/
-  Models/
-  Views/
+ ├── Controllers/
+ ├── Core/
+ ├── Models/
+ └── Views/
 
 config/
-
 database/
-
 public/
-  css/
-  scss/
+ ├── css/
+ └── scss/
 
 tests/
 ```
 
-## Installation
+---
 
-1. Cloner le projet
+## 🛠️ Technologies utilisées
 
-```
+* PHP 8
+* MySQL / MariaDB
+* Bootstrap 5
+* SASS
+* Composer
+* PHPStan
+* PHPUnit
+* Router : izniburak/router
+
+---
+
+## 🗄️ Base de données
+
+Base relationnelle MySQL comprenant :
+
+* users
+* trajets
+* agences
+
+Relations :
+
+* un utilisateur possède plusieurs trajets
+* un trajet est lié à une agence de départ et d’arrivée
+
+---
+
+## 🚀 Installation
+
+### 1. Cloner le projet
+
+```bash
 git clone ...
 ```
 
-2. Installer les dépendances
+### 2. Installer les dépendances
 
-```
+```bash
 composer install
 ```
 
-3. Configurer la base de données
+### 3. Base de données
 
-Créer une base MySQL et importer le fichier SQL.
+* créer une base MySQL
+* importer le fichier SQL fourni
 
-4. Lancer le serveur
+### 4. Lancer le projet
 
 Avec XAMPP :
 
@@ -75,48 +107,44 @@ Avec XAMPP :
 http://localhost/touche-pas-au-klaxon
 ```
 
-## Accès administrateur
+---
 
-Compte administrateur de test :
+## 🔐 Comptes de test
 
-Email :
+### Admin
 
-```
-admin@klaxon.local
-```
+* Email : [admin@klaxon.local](mailto:admin@klaxon.local)
+* Mot de passe : Admin123!
 
-Mot de passe :
+### Utilisateur
 
-```
-Admin123!
-```
+* Email : [chloe.roux@email.fr](mailto:chloe.roux@email.fr)
+* Mot de passe : User123!
 
-## Accès utilisateur 1
+---
 
-Compte utilisateur de test :
+## 🧪 Tests
 
-Email :
+Exécution des tests PHPUnit :
 
-```
-chloe.roux@email.fr
-```
-
-Mot de passe :
-
-```
-User123!
-
-
-
-## Tests
-
-Lancer les tests PHPUnit :
-
-```
+```bash
 vendor/bin/phpunit tests
 ```
 
-## Auteur
+---
 
-Projet réalisé dans le cadre d’un exercice de développement PHP.
-KHARKOVSKYI Vladyslav
+## 👨‍💻 Qualité du code
+
+* Validation des données côté serveur
+* Requêtes SQL préparées (PDO)
+* Protection contre les injections SQL
+* Protection contre XSS (htmlspecialchars)
+* Architecture MVC structurée
+* Tests unitaires (PHPUnit)
+* Analyse statique (PHPStan)
+
+---
+
+## 👤 Auteur
+
+Projet réalisé dans le cadre du Titre Professionnel Développeur Web et Web Mobile (DWWM)
